@@ -1,0 +1,76 @@
+#!/usr/bin/with-contenv bash
+
+bootstrap_directories() {
+    mkdir -p ${CONFIG_PATH}
+    mkdir -p ${DATA_PATH}
+    mkdir -p ${LOG_PATH}
+    mkdir -p ${PLUGINS_PATH}
+    mkdir -p ${PROVISIONING_PATH}
+    mkdir -p ${PROVISIONING_PATH}/access-control \
+             ${PROVISIONING_PATH}/datasources \
+             ${PROVISIONING_PATH}/dashboards \
+             ${PROVISIONING_PATH}/notifiers \
+             ${PROVISIONING_PATH}/plugins
+             \
+    chown -R grafana:grafana \
+                ${CONFIG_PATH} \
+                ${DATA_PATH} \
+                ${LOG_PATH} \
+                ${PLUGINS_PATH} \
+                ${PROVISIONING_PATH}
+    ## Official docker image is stating chmod 777 all the above. wtf
+
+    if [ ! -f "${CONFIG_PATH}/${CONFIG_FILE}" ] ; then
+        sudo -u grafana touch ${CONFIG_PATH}/${CONFIG_FILE}
+    fi
+    echo "alias grafana-cli=\"sudo -u grafana grafana-cli --pluginsDir ${PLUGINS_PATH} --homepath ${HOME_PATH}\"" >> /root/.bashrc
+}
+
+install_plugins() {
+    if [ -n "${INSTALL_PLUGINS}" ]; then
+        OLDIFS=$IFS
+        IFS=','
+        for plugin in ${INSTALL_PLUGINS}; do
+            IFS=$OLDIFS
+            if expr match "$plugin" '.*\;.*'; then
+                pluginUrl=$(echo "$plugin" | cut -d';' -f 1);
+                pluginInstallFolder=$(echo "$plugin" | cut -d';' -f 2);
+                sudo -u grafana grafana-cli --pluginUrl ${pluginUrl} --pluginsDir "${PLUGINS_PATH}" plugins install "${pluginInstallFolder}";
+            else
+                sudo -u grafana grafana-cli --pluginsDir "${PLUGINS_PATH}" plugins install ${plugin};
+            fi
+        done
+    fi
+
+    if var_true "${PLUGINS_AUTO_UPDATE}" ; then
+        sudo -u grafana grafana-cli --pluginsDir "${PLUGINS_PATH}" plugins update-all
+        echo "0 0 * * *  sudo -u grafana grafana --pluginsDir "${PLUGINS_PATH}" plugins update-all; pkill grafana-server "
+    fi
+
+    #if [ ! "$(ls -A $PLUGINS_PATH)" ]; then
+    #    cp -aR /assets/grafana/plugins/* ${PLUGINS_PATH}/
+    #fi
+}
+
+configure_aws() {
+    if [ ! -z ${AWS_PROFILES+x} ]; then
+        > "${HOME_PATH}/.aws/credentials"
+
+        for profile in ${AWS_PROFILES}; do
+            access_key_varname="AWS_${profile}_ACCESS_KEY_ID"
+            secret_key_varname="AWS_${profile}_SECRET_ACCESS_KEY"
+            region_varname="AWS_${profile}_REGION"
+
+            if [ ! -z "${!access_key_varname}" -a ! -z "${!secret_key_varname}" ]; then
+                echo "[${profile}]" >> "${HOME_PATH}/.aws/credentials"
+                echo "aws_access_key_id = ${!access_key_varname}" >> "${HOME_PATH}/.aws/credentials"
+                echo "aws_secret_access_key = ${!secret_key_varname}" >> "${HOME_PATH}/.aws/credentials"
+                if [ ! -z "${!region_varname}" ]; then
+                    echo "region = ${!region_varname}" >> "${HOME_PATH}/.aws/credentials"
+                fi
+            fi
+        done
+
+        chmod 600 "${HOME_PATH}/.aws/credentials"
+    fi
+}

@@ -1,0 +1,21 @@
+version: '2.4'
+services:
+
+  grafana-app:
+    image: tiredofit/grafana
+    ports:
+      - 3000:3000
+    container_name: grafana-app
+    volumes:
+      - ./data:/data
+      - ./logs:/logs
+      - ./config:/config
+    environment:
+      - TIMEZONE=America/Vancouver
+    networks:
+      - proxy
+    restart: always
+
+networks:
+  proxy:
+    external: true

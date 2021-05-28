@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+CONFIG_PATH=${CONFIG_PATH:-"/config/"}
+CONFIG_FILE=${CONFIG_FILE:-"config.ini"}
+DATA_PATH=${DATA_PATH:-"/data/"}
+HOME_PATH=${HOME_PATH:-"/usr/share/grafana/"}
+LOG_PATH=${LOG_PATH:-"/logs/"}
+PLUGINS_PATH=${PLUGINS_PATH:-"${DATA_PATH}/plugins"}
+PROVISIONING_PATH=${PROVISIONING_PATH:-"${CONFIG_PATH}/provisioning"}

@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bash
+
+source /assets/functions/00-container
+prepare_service single
+PROCESS_NAME="grafana"
+
+bootstrap_directories
+install_plugins
+
+liftoff
