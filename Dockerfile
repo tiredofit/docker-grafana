@@ -2,7 +2,7 @@ FROM tiredofit/alpine:3.13
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Set Environment Variables
-ENV GRAFANA_VERSION=v7.5.7 \
+ENV GRAFANA_VERSION=v8.0.0 \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     ENABLE_CRON=false \
     ENABLE_SMTP=false
