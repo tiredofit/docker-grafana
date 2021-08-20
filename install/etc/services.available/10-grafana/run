@@ -8,7 +8,7 @@ check_container_initialized
 check_service_initialized init
 liftoff
 
-print_info "Starting Grafana ${GRAFANA_VERSION}"
+print_start "Starting Grafana ${GRAFANA_VERSION}"
 sudo -u grafana grafana-server \
                         --homepath="${HOME_PATH}" \
                         --config="${CONFIG_PATH}/${CONFIG_FILE}" \
