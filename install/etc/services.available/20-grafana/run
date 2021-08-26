@@ -14,8 +14,8 @@ sudo -u grafana grafana-server \
                         --config="${CONFIG_PATH}/${CONFIG_FILE}" \
                         --packaging=docker \
                         "$@" \
-                        cfg:default.log.mode="console" \
-                        cfg:default.paths.data="$DATA_PATH" \
-                        cfg:default.paths.logs="$LOG_PATH" \
-                        cfg:default.paths.plugins="$PLUGINS_PATH" \
-                        cfg:default.paths.provisioning="$PROVISIONING_PATH"
+                        cfg:default.log.mode="${LOG_TYPE,,}" \
+                        cfg:default.paths.data="${DATA_PATH}" \
+                        cfg:default.paths.logs="${LOG_PATH}" \
+                        cfg:default.paths.plugins="${PLUGINS_PATH}" \
+                        cfg:default.paths.provisioning="${PROVISIONING_PATH}"

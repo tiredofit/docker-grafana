@@ -2,20 +2,26 @@ version: '2.4'
 services:
 
   grafana-app:
-    image: tiredofit/grafana
-    ports:
-      - 3000:3000
+    image: tiredofit/grafana:latest
     container_name: grafana-app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana-app.rule=Host(`grafana.example.com`)
+      - traefik.http.services.grafana-app.loadbalancer.server.port=3000
     volumes:
+      - ./config:/config
       - ./data:/data
       - ./logs:/logs
-      - ./config:/config
     environment:
       - TIMEZONE=America/Vancouver
+      - CONTAINER_NAME=grafana-app
     networks:
       - proxy
+      - services
     restart: always
 
 networks:
   proxy:
+    external: true
+  services:
     external: true

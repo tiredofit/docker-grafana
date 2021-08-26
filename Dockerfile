@@ -1,12 +1,12 @@
-FROM tiredofit/alpine:3.14
+FROM tiredofit/nginx:alpine-3.14
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ### Set Environment Variables
 ENV GRAFANA_VERSION=v8.1.2 \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
-    ENABLE_CRON=false \
-    ENABLE_SMTP=false
-
+    CONTAINER_ENABLE_MESSAGING=FALSE \
+    NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
+    
 RUN set -x && \
     apk update && \
     apk upgrade && \

@@ -4,7 +4,9 @@ source /assets/functions/00-container
 prepare_service single
 PROCESS_NAME="grafana"
 
+sanity_var APP_URL "Full address of application"
 bootstrap_directories
 install_plugins
+create_configuration
 
 liftoff

@@ -1,0 +1,204 @@
+#!/usr/bin/with-contenv bash
+
+bootstrap_directories() {
+    mkdir -p ${CONFIG_PATH}
+    mkdir -p ${DATA_PATH}
+    mkdir -p ${LOG_PATH}
+    mkdir -p ${PLUGINS_PATH}
+    mkdir -p ${PROVISIONING_PATH}
+    mkdir -p ${PROVISIONING_PATH}/access-control \
+             ${PROVISIONING_PATH}/datasources \
+             ${PROVISIONING_PATH}/dashboards \
+             ${PROVISIONING_PATH}/notifiers \
+             ${PROVISIONING_PATH}/plugins
+             \
+    chown -R grafana:grafana \
+                ${CONFIG_PATH} \
+                ${DATA_PATH} \
+                ${LOG_PATH} \
+                ${PLUGINS_PATH} \
+                ${PROVISIONING_PATH}
+    ## Official docker image is stating chmod 777 all the above. wtf
+
+    if [ ! -f "${CONFIG_PATH}/${CONFIG_FILE}" ] ; then
+        sudo -u grafana touch ${CONFIG_PATH}/${CONFIG_FILE}
+    fi
+    echo "alias grafana-cli=\"sudo -u grafana grafana-cli --pluginsDir ${PLUGINS_PATH} --homepath ${HOME_PATH}\"" >> /root/.bashrc
+}
+
+install_plugins() {
+    if [ -n "${INSTALL_PLUGINS}" ]; then
+        OLDIFS=$IFS
+        IFS=','
+        for plugin in ${INSTALL_PLUGINS}; do
+            IFS=$OLDIFS
+            if expr match "$plugin" '.*\;.*'; then
+                pluginUrl=$(echo "$plugin" | cut -d';' -f 1);
+                pluginInstallFolder=$(echo "$plugin" | cut -d';' -f 2);
+                sudo -u grafana grafana-cli --pluginUrl ${pluginUrl} --pluginsDir "${PLUGINS_PATH}" plugins install "${pluginInstallFolder}";
+            else
+                sudo -u grafana grafana-cli --pluginsDir "${PLUGINS_PATH}" plugins install ${plugin};
+            fi
+        done
+    fi
+
+    if var_true "${PLUGINS_AUTO_UPDATE}" ; then
+        sudo -u grafana grafana-cli --pluginsDir "${PLUGINS_PATH}" plugins update-all
+        echo "0 0 * * *  sudo -u grafana grafana --pluginsDir "${PLUGINS_PATH}" plugins update-all; pkill grafana-server "
+    fi
+
+    #if [ ! "$(ls -A $PLUGINS_PATH)" ]; then
+    #    cp -aR /assets/grafana/plugins/* ${PLUGINS_PATH}/
+    #fi
+}
+
+create_configuration() {
+    if [ "${SETUP_TYPE}" = "AUTO" ] || [ "${SETUP_TYPE}" = "auto" ] ; then
+        print_debug "Configuring Grafana"
+        if var_true "${ENABLE_OAUTH}" ; then
+            print_debug "Configuring Oauth"
+            authentication_oauth=$(cat<<EOF
+[auth.generic_oauth]
+enabled = ${ENABLE_OAUTH,,}
+client_id = ${OAUTH_CLIENT_ID}
+client_secret = ${OAUTH_CLIENT_SECRET}
+scopes = ${OAUTH_SCOPES}
+auth_url = ${OAUTH_AUTH_URL}
+token_url = ${OAUTH_TOKEN_URL}
+api_url = ${OAUTH_API_URL}
+allow_sign_up = ${OAUTH_ALLOW_SIGNUP}
+name = ${OAUTH_PROVIDER_NAME}
+send_client_credentials_via_post = ${OAUTH_SEND_CLIENT_CREDS_POST,,}
+email_attribute_name = ${OAUTH_ATTRIBUTE_EMAIL}
+EOF
+            )
+        fi
+
+    cat <<EOF > ${CONFIG_PATH}/${CONFIG_FILE}
+
+[server]
+protocol = ${LISTEN_PROTOCOL}
+http_port = ${LISTEN_PORT}
+root_url = ${APP_URL}
+router_logging = ${LOG_WEB_REQUESTS}
+
+[log]
+# Either "console", "file", "syslog". Default is console and  file
+# Use space to separate multiple modes, e.g. "console file"
+mode = ${LOG_TYPE}
+
+# Either "debug", "info", "warn", "error", "critical", default is "info"
+level = ${LOG_LEVEL}
+
+# optional settings to set different levels for specific loggers. Ex filters = sqlstore:debug
+;filters = ${LOG_FILTERS}
+
+# For "console" mode only
+[log.console]
+level = ${LOG_LEVEL_CONSOLE}
+
+# log line format, valid options are text, console and json
+format = ${LOG_FORMAT_CONSOLE}
+
+# For "file" mode only
+[log.file]
+level = ${LOG_LEVEL_FILE}
+
+# log line format, valid options are text, console and json
+format = ${LOG_FORMAT_FILE}
+daily_rotate = false
+
+[users]
+allow_sign_up = ${ENABLE_SIGN_UP,,}
+allow_org_create = ${ENABLE_ORG_CREATE,,}
+auto_assign_org = ${ENABLE_AUTO_ASSIGN_ORG,,}
+auto_assign_org_id = ${AUTO_ASSIGN_ORG_ID}
+auto_assign_org_role = ${AUTO_ASSIGN_ORG_ROLE}
+verify_email_enabled = ${SIGNUP_VERIFY_EMAIL,,}
+login_hint = ${LOGIN_HINT}
+password_hint = ${PASSWORD_HINT}
+default_theme = ${DEFAULT_THEME,,}
+
+# Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash.
+; home_page =
+# External user management, these options affect the organization users view
+;external_manage_link_url =
+;external_manage_link_name =
+;external_manage_info =
+# Viewers can edit/inspect dashboard settings in the browser. But not save the dashboard.
+;viewers_can_edit = false
+# Editors can administrate dashboard, folders and teams they create
+;editors_can_admin = false
+# The duration in time a user invitation remains valid before expiring. This setting should be expressed as a duration. Examples: 6h (hours), 2d (days), 1w (week). Default is 24h (24 hours). The minimum supported duration is 15m (15 minutes).
+;user_invite_max_lifetime_duration = 24h
+
+
+[auth]
+login_cookie_name = ${COOKIE_NAME}
+login_maximum_inactive_lifetime_duration = ${LIFETIME_LOGIN_MAXIMUM_INACTIVE,,}
+login_maximum_lifetime_duration = ${LIFETIME_LOGIN_MAXIMUM}
+disable_login_form = ${DISABLE_LOGIN_FORM,,}
+disable_signout_menu = ${DISABLE_SIGNOUT,,}
+signout_redirect_url = ${SIGNOUT_REDIRECT_URL}
+oauth_auto_login = ${OAUTH_AUTO_LOGIN,,}
+oauth_state_cookie_max_age = ${LIFETIME_OAUTH_STATE_COOKIE}
+api_key_max_seconds_to_live = ${LIFETIME_API_KEY_MAXIMUM}
+sigv4_auth_enabled = ${ENABLE_SIGV4_AUTH,,}
+
+[auth.anonymous]
+enabled = ${ENABLE_ANONYMOUS,,}
+org_name = ${ANONYMOUS_ORG_NAME}
+org_role = ${ANONYMOUS_ROLE}
+hide_version = ${ANONYMOUS_HIDE_VERSION,,}
+
+[plugins]
+enable_alpha = ${PLUGIN_ENABLE_ALPHA,,}
+app_tls_skip_verify_insecure = ${PLUGIN_SKIP_TLS_VERIFY,,}
+plugin_admin_enabled = ${PLUGIN_ENABLE_INSTALL_ADMIN,,}
+plugin_admin_external_manage_enabled = ${PLUGIN_ENABLE_ADMIN_EXERNAL_MANAGE,,}
+plugin_catalog_url = ${PLUGIN_CATALOG_URL}
+
+[smtp]
+enabled = false
+host = ${SMTP_HOST}:${SMTP_PORT}
+user = ${SMTP_USER}
+# If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
+password = ${SMTP_PASS}
+cert_file =
+key_file =
+skip_verify = false
+from_address = ${SMTP_FROM}
+from_name = ${MAIL_FROM}
+# EHLO identity in SMTP dialog (defaults to instance_name)
+ehlo_identity = ${CONTAINER_NAME}
+# SMTP startTLS policy (defaults to 'OpportunisticStartTLS')
+;startTLS_policy = NoStartTLS
+
+${authentication_oauth}
+EOF
+    else
+        print_debug "Not Autoconfiguring Grafana"
+    fi
+}
+configure_aws() {
+    if [ ! -z ${AWS_PROFILES+x} ]; then
+        > "${HOME_PATH}/.aws/credentials"
+
+        for profile in ${AWS_PROFILES}; do
+            access_key_varname="AWS_${profile}_ACCESS_KEY_ID"
+            secret_key_varname="AWS_${profile}_SECRET_ACCESS_KEY"
+            region_varname="AWS_${profile}_REGION"
+
+            if [ ! -z "${!access_key_varname}" -a ! -z "${!secret_key_varname}" ]; then
+                echo "[${profile}]" >> "${HOME_PATH}/.aws/credentials"
+                echo "aws_access_key_id = ${!access_key_varname}" >> "${HOME_PATH}/.aws/credentials"
+                echo "aws_secret_access_key = ${!secret_key_varname}" >> "${HOME_PATH}/.aws/credentials"
+                if [ ! -z "${!region_varname}" ]; then
+                    echo "region = ${!region_varname}" >> "${HOME_PATH}/.aws/credentials"
+                fi
+            fi
+        done
+
+        chmod 600 "${HOME_PATH}/.aws/credentials"
+    fi
+}
