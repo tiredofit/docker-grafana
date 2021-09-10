@@ -1,27 +1,27 @@
 #!/usr/bin/with-contenv bash
 
 bootstrap_directories() {
-    mkdir -p ${CONFIG_PATH}
-    mkdir -p ${DATA_PATH}
-    mkdir -p ${LOG_PATH}
-    mkdir -p ${PLUGINS_PATH}
-    mkdir -p ${PROVISIONING_PATH}
-    mkdir -p ${PROVISIONING_PATH}/access-control \
-             ${PROVISIONING_PATH}/datasources \
-             ${PROVISIONING_PATH}/dashboards \
-             ${PROVISIONING_PATH}/notifiers \
-             ${PROVISIONING_PATH}/plugins
+    mkdir -p "${CONFIG_PATH}"
+    mkdir -p "${DATA_PATH}"
+    mkdir -p "${LOG_PATH}"
+    mkdir -p "${PLUGINS_PATH}"
+    mkdir -p "${PROVISIONING_PATH}"
+    mkdir -p "${PROVISIONING_PATH}"/access-control \
+             "${PROVISIONING_PATH}"/datasources \
+             "${PROVISIONING_PATH}"/dashboards \
+             "${PROVISIONING_PATH}"/notifiers \
+             "${PROVISIONING_PATH}"/plugins
              \
     chown -R grafana:grafana \
-                ${CONFIG_PATH} \
-                ${DATA_PATH} \
-                ${LOG_PATH} \
-                ${PLUGINS_PATH} \
-                ${PROVISIONING_PATH}
+                "${CONFIG_PATH}" \
+                "${DATA_PATH}" \
+                "${LOG_PATH}" \
+                "${PLUGINS_PATH}" \
+                "${PROVISIONING_PATH}"
     ## Official docker image is stating chmod 777 all the above. wtf
 
     if [ ! -f "${CONFIG_PATH}/${CONFIG_FILE}" ] ; then
-        sudo -u grafana touch ${CONFIG_PATH}/${CONFIG_FILE}
+        sudo -u grafana touch "${CONFIG_PATH}"/"${CONFIG_FILE}"
     fi
     echo "alias grafana-cli=\"sudo -u grafana grafana-cli --pluginsDir ${PLUGINS_PATH} --homepath ${HOME_PATH}\"" >> /root/.bashrc
 }
@@ -35,9 +35,9 @@ install_plugins() {
             if expr match "$plugin" '.*\;.*'; then
                 pluginUrl=$(echo "$plugin" | cut -d';' -f 1);
                 pluginInstallFolder=$(echo "$plugin" | cut -d';' -f 2);
-                sudo -u grafana grafana-cli --pluginUrl ${pluginUrl} --pluginsDir "${PLUGINS_PATH}" plugins install "${pluginInstallFolder}";
+                sudo -u grafana grafana-cli --pluginUrl "${pluginUrl}" --pluginsDir "${PLUGINS_PATH}" plugins install "${pluginInstallFolder}";
             else
-                sudo -u grafana grafana-cli --pluginsDir "${PLUGINS_PATH}" plugins install ${plugin};
+                sudo -u grafana grafana-cli --pluginsDir "${PLUGINS_PATH}" plugins install "${plugin}";
             fi
         done
     fi
@@ -74,7 +74,7 @@ EOF
             )
         fi
 
-    cat <<EOF > ${CONFIG_PATH}/${CONFIG_FILE}
+    cat <<EOF > "${CONFIG_PATH}"/"${CONFIG_FILE}"
 
 [server]
 protocol = ${LISTEN_PROTOCOL}
