@@ -16,6 +16,7 @@ RUN set -x && \
     \
     apk add -t .grafana-run-deps \
                 chromium \
+                libc6-compat \
                 ttf-opensans \
                 udev \
                 && \

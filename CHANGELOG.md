@@ -1,3 +1,9 @@
+## 0.0.9 2021-11-08 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Add libc6-compat package
+
+
 ## 0.0.8 2021-11-08 <dave at tiredofit dot ca>
 
    ### Added
