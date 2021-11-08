@@ -1,3 +1,12 @@
+## 0.0.8 2021-11-08 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 8.2.3
+
+   ### Changed
+      - Stop building from source, just use compiled versions
+
+
 ## 0.0.7 2021-10-19 <dave at tiredofit dot ca>
 
    ### Added
