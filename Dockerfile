@@ -1,8 +1,8 @@
-FROM docker.io/tiredofit/nginx:alpine-3.14
+FROM docker.io/tiredofit/nginx:alpine-3.15
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ### Set Environment Variables
-ENV GRAFANA_VERSION=v8.2.4 \
+ENV GRAFANA_VERSION=v8.3.0 \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
