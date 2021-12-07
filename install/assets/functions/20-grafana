@@ -26,6 +26,17 @@ bootstrap_directories() {
     echo "alias grafana-cli=\"sudo -u grafana grafana-cli --pluginsDir ${PLUGINS_PATH} --homepath ${HOME_PATH}\"" >> /root/.bashrc
 }
 
+configure_monitoring() {
+    if var_true "${CONTAINER_ENABLE_MONITORING}" && [ "${CONTAINER_MONITORING_BACKEND,,}" = "zabbix" ]; then
+        source /assets/defaults/03-monitoring
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/tiredofit_grafana.conf
+# Zabbix Grafana Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-grafana
+# Autoregister=grafana
+EOF
+    fi
+}
+
 install_plugins() {
     if [ -n "${INSTALL_PLUGINS}" ]; then
         OLDIFS=$IFS
