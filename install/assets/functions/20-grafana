@@ -28,7 +28,6 @@ bootstrap_directories() {
 
 configure_monitoring() {
     if var_true "${CONTAINER_ENABLE_MONITORING}" && [ "${CONTAINER_MONITORING_BACKEND,,}" = "zabbix" ]; then
-        source /assets/defaults/03-monitoring
         cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/tiredofit_grafana.conf
 # Zabbix Grafana Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-grafana

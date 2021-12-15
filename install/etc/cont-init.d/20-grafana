@@ -2,6 +2,7 @@
 
 source /assets/functions/00-container
 prepare_service single
+prepare_service 03-monitoring
 PROCESS_NAME="grafana"
 
 sanity_var APP_URL "Full address of application"

@@ -1,3 +1,9 @@
+## 0.0.15 2021-12-15 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fixup for Zabbix Autoregistration
+
+
 ## 0.0.14 2021-12-14 <dave at tiredofit dot ca>
 
    ### Added
