@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 bootstrap_directories() {
     mkdir -p "${CONFIG_PATH}"
@@ -27,13 +27,7 @@ bootstrap_directories() {
 }
 
 configure_monitoring() {
-    if var_true "${CONTAINER_ENABLE_MONITORING}" && [ "${CONTAINER_MONITORING_BACKEND,,}" = "zabbix" ]; then
-        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/tiredofit_grafana.conf
-# Zabbix Grafana Configuration - Automatically Generated
-# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-grafana
-# Autoregister=grafana
-EOF
-    fi
+    create_zabbix grafana
 }
 
 install_plugins() {

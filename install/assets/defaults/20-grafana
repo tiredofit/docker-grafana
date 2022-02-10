@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 ANONYMOUS_HIDE_VERSION=${ANONYMOUS_HIDE_VERSION:-"TRUE"}
 ANONYMOUS_ORG_NAME=${ANONYMOUS_ORG_NAME:-"Main Org."}
