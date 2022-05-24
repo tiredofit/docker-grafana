@@ -1,4 +1,4 @@
-FROM docker.io/tiredofit/nginx:alpine-3.15
+FROM docker.io/tiredofit/nginx:alpine-3.16
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ### Set Environment Variables
