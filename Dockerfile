@@ -6,6 +6,7 @@ ENV GRAFANA_VERSION=v9.0.1 \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE \
+    NGINX_SITE_ENABLED=grafana \
     IMAGE_NAME="tiredofit/grafana" \
     IMAGE_REPO_URL="https://github.com/tiredofit/docker-grafana/"
     
