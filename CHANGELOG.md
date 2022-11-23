@@ -1,3 +1,10 @@
+## 0.0.57 2022-11-23 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 9.2.6
+      - Alpine 3.17 base
+
+
 ## 0.0.56 2022-11-16 <dave at tiredofit dot ca>
 
    ### Added

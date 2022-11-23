@@ -1,15 +1,15 @@
-FROM docker.io/tiredofit/nginx:alpine-3.16
+FROM docker.io/tiredofit/nginx:alpine-3.17
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ### Set Environment Variables
-ENV GRAFANA_VERSION=v9.2.5 \
+ENV GRAFANA_VERSION=v9.2.6 \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE \
     NGINX_SITE_ENABLED=grafana \
     IMAGE_NAME="tiredofit/grafana" \
     IMAGE_REPO_URL="https://github.com/tiredofit/docker-grafana/"
-    
+
 RUN set -x && \
     apk update && \
     apk upgrade && \
