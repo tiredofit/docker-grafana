@@ -1,3 +1,10 @@
+## 0.0.58 2022-11-30 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 9.2.7
+      - Rework Dockerfile
+
+
 ## 0.0.57 2022-11-23 <dave at tiredofit dot ca>
 
    ### Added

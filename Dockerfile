@@ -1,8 +1,12 @@
-FROM docker.io/tiredofit/nginx:alpine-3.17
+ARG DISTRO="alpine"
+ARG DISTRO_VARIANT="3.17"
+
+FROM docker.io/tiredofit/nginx:${DISTRO}-${DISTRO_VARIANT}
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
-### Set Environment Variables
-ENV GRAFANA_VERSION=v9.2.6 \
+ARG GRAFANA_VERSION
+
+ENV GRAFANA_VERSION=${GRAFANA_VERSION:-v9.2.7} \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE \
@@ -10,14 +14,15 @@ ENV GRAFANA_VERSION=v9.2.6 \
     IMAGE_NAME="tiredofit/grafana" \
     IMAGE_REPO_URL="https://github.com/tiredofit/docker-grafana/"
 
-RUN set -x && \
-    apk update && \
-    apk upgrade && \
+RUN source /assets/functions/00-container && \
+    set -x && \
+    package update && \
+    package upgrade && \
     \
     addgroup -g 472 grafana && \
     adduser -S -D -H -h /usr/share/grafana -s /sbin/nologin -G grafana -u 472 grafana && \
     \
-    apk add -t .grafana-run-deps \
+    package install -t .grafana-run-deps \
                 chromium \
                 libc6-compat \
                 ttf-opensans \
@@ -46,13 +51,13 @@ RUN set -x && \
     #done ; \
     #chown -R grafana:grafana /assets/grafana/plugins && \
     \
-    rm -rf /usr/src/* && \
-    #rm -rf /root/.config /root/.cache /root/.go && \
-    rm -rf /tmp/* && \
-    rm -rf /var/cache/apk/*
+    package cleanup && \
+    rm -rf /usr/src/ \
+           /root/.cache \
+           /root/.config \
+           /root/.go \
+           /tmp/*
 
-## Networking
 EXPOSE 3000
 
-#### Add Files
 COPY install /
