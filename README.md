@@ -1,7 +1,7 @@
 # github.com/tiredofit/docker-grafana
 
 [![GitHub release](https://img.shields.io/github/v/tag/tiredofit/docker-grafana?style=flat-square)](https://github.com/tiredofit/docker-grafana/releases/latest)
-[![Build Status](https://img.shields.io/github/workflow/status/tiredofit/docker-grafana/build?style=flat-square)](https://github.com/tiredofit/docker-grafana/actions?query=workflow%3Abuild)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/tiredofit/docker-grafana/main.yml?branch=main&style=flat-square)](https://github.com/tiredofit/docker-grafana/actions)
 [![Docker Stars](https://img.shields.io/docker/stars/tiredofit/grafana.svg?style=flat-square&logo=docker)](https://hub.docker.com/r/tiredofit/grafana/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/tiredofit/grafana.svg?style=flat-square&logo=docker)](https://hub.docker.com/r/tiredofit/grafana/)
 [![Become a sponsor](https://img.shields.io/badge/sponsor-tiredofit-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/tiredofit)
