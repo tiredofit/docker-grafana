@@ -55,7 +55,7 @@ docker pull docker.io/tiredofdit/grafana:(imagetag)
 Builds of the image are also available on the [Github Container Registry](https://github.com/tiredofit/docker-grafana/pkgs/container/docker-grafana) 
  
 ```
-docker pull ghcr.io/tiredofit/docker-grafana/pkgs/container/docker-grafana):(imagetag)
+docker pull ghcr.io/tiredofit/docker-grafana:(imagetag)
 ``` 
 
 The following image tags are available along with their tagged release based on what's written in the [Changelog](CHANGELOG.md):
