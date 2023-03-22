@@ -6,7 +6,7 @@ LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ARG GRAFANA_VERSION
 
-ENV GRAFANA_VERSION=${GRAFANA_VERSION:-v9.4.3} \
+ENV GRAFANA_VERSION=${GRAFANA_VERSION:-v9.4.7} \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE \
@@ -22,7 +22,7 @@ RUN source /assets/functions/00-container && \
     addgroup -g 472 grafana && \
     adduser -S -D -H -h /usr/share/grafana -s /sbin/nologin -G grafana -u 472 grafana && \
     \
-    package install -t .grafana-run-deps \
+    package install .grafana-run-deps \
                 chromium \
                 libc6-compat \
                 ttf-opensans \
