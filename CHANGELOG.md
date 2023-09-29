@@ -1,3 +1,9 @@
+## 0.0.78 2023-09-29 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 9.5.11
+
+
 ## 0.0.77 2023-09-19 <dave at tiredofit dot ca>
 
    ### Added
