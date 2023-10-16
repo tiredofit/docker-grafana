@@ -1,3 +1,12 @@
+## 0.0.81 2023-10-16 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 10.1.5
+
+   ### Changed
+      - Fix Dockerfile to support single binary mode introduced in recent releases (credit fermion2020@github)
+
+
 ## 0.0.80 2023-10-12 <dave at tiredofit dot ca>
 
    ### Added

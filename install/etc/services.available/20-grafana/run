@@ -9,7 +9,8 @@ check_service_initialized init
 liftoff
 
 print_start "Starting Grafana ${GRAFANA_VERSION}"
-exec sudo -u grafana grafana-server \
+exec sudo -u grafana grafana \
+                        server \
                         --homepath="${HOME_PATH}" \
                         --config="${CONFIG_PATH}/${CONFIG_FILE}" \
                         --packaging=docker \
