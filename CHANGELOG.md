@@ -1,3 +1,12 @@
+## 1.0.0 2023-11-15 <fermion2020>
+
+   ### Added
+      - Grafana 10.2.1
+      - Customizable Database engine
+   
+  ### Changed
+      - Fixed some deprecated configs 
+
 ## 0.0.83 2023-11-14 <dave at tiredofit dot ca>
 
    ### Added
@@ -17,7 +26,6 @@
 
    ### Changed
       - Fix Dockerfile to support single binary mode introduced in recent releases (credit fermion2020@github)
-
 
 ## 0.0.80 2023-10-12 <dave at tiredofit dot ca>
 

@@ -48,7 +48,7 @@ install_plugins() {
 
     if var_true "${PLUGINS_AUTO_UPDATE}" ; then
         sudo -u grafana grafana-cli --pluginsDir "${PLUGINS_PATH}" plugins update-all
-        echo "0 0 * * *  sudo -u grafana grafana --pluginsDir "${PLUGINS_PATH}" plugins update-all; pkill grafana-server "
+        echo "0 0 * * *  sudo -u grafana grafana --pluginsDir "${PLUGINS_PATH}" plugins update-all; pkill grafana "
     fi
 
     #if [ ! "$(ls -A $PLUGINS_PATH)" ]; then
@@ -77,6 +77,24 @@ email_attribute_name = ${OAUTH_ATTRIBUTE_EMAIL}
 EOF
             )
         fi
+
+#+++ DB
+        if [ "${DB_TYPE,,}" != "sqlite" ] ; then
+            print_debug "Configuring database"
+            database_config=$(cat<<EOF
+[database]
+type = ${DB_TYPE}
+host = ${DB_HOST}:${DB_PORT}
+name = ${DB_NAME}
+user = ${DB_USER}
+password = ${DB_PASS}
+EOF
+            )
+        else
+            database_config=''
+            print_debug "SQLite database detected. No additional configuration needed."
+        fi
+#--- DB
 
     cat <<EOF > "${CONFIG_PATH}"/"${CONFIG_FILE}"
 
@@ -144,7 +162,7 @@ login_maximum_lifetime_duration = ${LIFETIME_LOGIN_MAXIMUM}
 disable_login_form = ${DISABLE_LOGIN_FORM,,}
 disable_signout_menu = ${DISABLE_SIGNOUT,,}
 signout_redirect_url = ${SIGNOUT_REDIRECT_URL}
-oauth_auto_login = ${OAUTH_AUTO_LOGIN,,}
+auto_login = ${OAUTH_AUTO_LOGIN,,}
 oauth_state_cookie_max_age = ${LIFETIME_OAUTH_STATE_COOKIE}
 api_key_max_seconds_to_live = ${LIFETIME_API_KEY_MAXIMUM}
 sigv4_auth_enabled = ${ENABLE_SIGV4_AUTH,,}
@@ -179,6 +197,8 @@ ehlo_identity = ${CONTAINER_NAME}
 ;startTLS_policy = NoStartTLS
 
 ${authentication_oauth}
+
+${database_config}
 EOF
     else
         print_debug "Not Autoconfiguring Grafana"

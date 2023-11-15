@@ -83,6 +83,15 @@ Images are built primarily for `amd64` architecture, and may also include builds
 * * *
 ### Environment Variables
 
+| Parameter                            | Description                                | Default             |
+| ------------------------------------ | ------------------------------------------ | ------------------- |
+| `DB_TYPE`                            | DB engine type                             | `sqlite`            |
+| `DB_HOST`                            | Database host                              | `localhost`         |
+| `DB_PORT`                            | Database port                              | `3306`              |
+| `DB_NAME`                            | Database name                              | `grafana`           |
+| `DB_USER`                            | Database user                              | `grafana`           |
+| `DB_PASS`                            | Database passwor                           | `password`          |
+
 #### Base Images used
 
 This image relies on an [Alpine Linux](https://hub.docker.com/r/tiredofit/alpine) base image that relies on an [init system](https://github.com/just-containers/s6-overlay) for added capabilities. Outgoing SMTP capabilities are handlded via `msmtp`. Individual container performance monitoring is performed by [zabbix-agent](https://zabbix.org). Additional tools include: `bash`,`curl`,`less`,`logrotate`, `nano`.
