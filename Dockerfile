@@ -34,6 +34,7 @@ RUN source /assets/functions/00-container && \
     cd /usr/src/grafana && \
     cp -R /usr/src/grafana/bin/grafana-server /usr/sbin && \
     cp -R /usr/src/grafana/bin/grafana-cli /usr/sbin && \
+    cp -R /usr/src/grafana/bin/grafana /usr/sbin && \
     mkdir -p /usr/share/grafana  && \
     cp -R /usr/src/grafana/public /usr/share/grafana && \
     cp -R /usr/src/grafana/conf /usr/share/grafana && \
