@@ -17,28 +17,29 @@ This will allow you to build a Docker image for Grafana.
 
 ## Table of Contents
 
-- [About](#about)
-- [Maintainer](#maintainer)
-- [Table of Contents](#table-of-contents)
-- [Prerequisites and Assumptions](#prerequisites-and-assumptions)
-- [Installation](#installation)
-  - [Build from Source](#build-from-source)
-  - [Prebuilt Images](#prebuilt-images)
-    - [Multi Architecture](#multi-architecture)
-- [Configuration](#configuration)
-  - [Quick Start](#quick-start)
-  - [Persistent Storage](#persistent-storage)
-  - [Environment Variables](#environment-variables)
-    - [Base Images used](#base-images-used)
-- [Maintenance](#maintenance)
-  - [Shell Access](#shell-access)
-- [Support](#support)
-  - [Usage](#usage)
-  - [Bugfixes](#bugfixes)
-  - [Feature Requests](#feature-requests)
-  - [Updates](#updates)
-- [License](#license)
-- [References](#references)
+- [github.com/tiredofit/docker-grafana](#githubcomtiredofitdocker-grafana)
+  - [About](#about)
+  - [Maintainer](#maintainer)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites and Assumptions](#prerequisites-and-assumptions)
+  - [Installation](#installation)
+    - [Build from Source](#build-from-source)
+    - [Prebuilt Images](#prebuilt-images)
+      - [Multi Architecture](#multi-architecture)
+  - [Configuration](#configuration)
+    - [Quick Start](#quick-start)
+    - [Persistent Storage](#persistent-storage)
+    - [Environment Variables](#environment-variables)
+      - [Base Images used](#base-images-used)
+  - [Maintenance](#maintenance)
+    - [Shell Access](#shell-access)
+  - [Support](#support)
+    - [Usage](#usage)
+    - [Bugfixes](#bugfixes)
+    - [Feature Requests](#feature-requests)
+    - [Updates](#updates)
+  - [License](#license)
+  - [References](#references)
 
 ## Prerequisites and Assumptions
 
@@ -91,6 +92,8 @@ Images are built primarily for `amd64` architecture, and may also include builds
 | `DB_NAME`                            | Database name                              | `grafana`           |
 | `DB_USER`                            | Database user                              | `grafana`           |
 | `DB_PASS`                            | Database passwor                           | `password`          |
+| `AUTO_ASSIGN_ORG_ROLE`               | Role for auto-created user                 | `Viewer`            |
+| `OAUTH_ALLOW_INSECURE_EMAIL`         | If you use Generic OAuth with an identity<br> provider that does not support <br>a unique ID field please set it `TRUE` | `FALSE` |
 
 #### Base Images used
 

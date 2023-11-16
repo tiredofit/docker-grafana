@@ -164,8 +164,10 @@ disable_signout_menu = ${DISABLE_SIGNOUT,,}
 signout_redirect_url = ${SIGNOUT_REDIRECT_URL}
 auto_login = ${OAUTH_AUTO_LOGIN,,}
 oauth_state_cookie_max_age = ${LIFETIME_OAUTH_STATE_COOKIE}
+oauth_allow_insecure_email_lookup = ${OAUTH_ALLOW_INSECURE_EMAIL,,}
 api_key_max_seconds_to_live = ${LIFETIME_API_KEY_MAXIMUM}
 sigv4_auth_enabled = ${ENABLE_SIGV4_AUTH,,}
+
 
 [auth.anonymous]
 enabled = ${ENABLE_ANONYMOUS,,}

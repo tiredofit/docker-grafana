@@ -1,3 +1,10 @@
+## 1.0.1 2023-11-16 <fermion2020>
+
+   ### Added
+      - OAUTH_ALLOW_INSECURE_EMAIL as an escape hatch to return the previous behavior on Generic OAuth
+      - Updated template for docker-compose.yml
+
+
 ## 1.0.0 2023-11-15 <fermion2020>
 
    ### Added
@@ -511,5 +518,4 @@
 
    ### Added
       - Grafana 8.0.0
-
 

@@ -20,6 +20,24 @@ services:
       - services
     restart: always
 
+  grafana-db:
+    image: tiredofit/mariadb:latest
+    container_name: grafana-db
+    volumes:
+      - ./mariadb:/var/lib/mysql
+      - ./logs/mariadb:/logs
+    environment:
+      - TIMEZONE=America/Vancouver
+      - CONTAINER_NAME=grafana-db
+
+      - ROOT_PASS=root_password
+      - DB_NAME=grafana
+      - DB_USER=grafana
+      - DB_PASS=user_password
+    networks:
+      - services
+    restart: always    
+
 networks:
   proxy:
     external: true
