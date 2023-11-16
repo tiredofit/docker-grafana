@@ -1,10 +1,37 @@
-## 0.0.81 2023-11-15 <fermion2020>
+## 1.0.1 2023-11-16 <fermion2020>
+
+   ### Added
+      - `OAUTH_ALLOW_INSECURE_EMAIL` as an escape hatch to return the previous behavior on Generic OAuth
+      - Updated template for docker-compose.yml
+
+## 1.0.0 2023-11-15 <fermion2020>
 
    ### Added
       - Grafana 10.2.1
-      - You can be able to choose databese engine
-      - Fixed some depricated configs 
+      - Customizable Database engine
+   
+  ### Changed
+      - Fixed some deprecated configs 
 
+## 0.0.83 2023-11-14 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 10.2.1
+
+
+## 0.0.82 2023-10-24 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 10.2.0
+
+
+## 0.0.81 2023-10-16 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 10.1.5
+
+   ### Changed
+      - Fix Dockerfile to support single binary mode introduced in recent releases (credit fermion2020@github)
 
 ## 0.0.80 2023-10-12 <dave at tiredofit dot ca>
 
@@ -490,5 +517,4 @@
 
    ### Added
       - Grafana 8.0.0
-
 
