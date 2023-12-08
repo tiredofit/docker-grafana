@@ -1,3 +1,9 @@
+## 1.0.2 2023-12-08 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update to tiredofit/nginx:alpine-3.19
+
+
 ## 1.0.1 2023-11-16 <fermion2020>
 
    ### Added
