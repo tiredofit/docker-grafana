@@ -1,12 +1,12 @@
 ARG DISTRO="alpine"
-ARG DISTRO_VARIANT="3.19"
+ARG DISTRO_VARIANT="3.20"
 
 FROM docker.io/tiredofit/nginx:${DISTRO}-${DISTRO_VARIANT}
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ARG GRAFANA_VERSION
 
-ENV GRAFANA_VERSION=${GRAFANA_VERSION:-v11.1.3} \
+ENV GRAFANA_VERSION=${GRAFANA_VERSION:-v11.1.5} \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE \
@@ -23,22 +23,28 @@ RUN source /assets/functions/00-container && \
     adduser -S -D -H -h /usr/share/grafana -s /sbin/nologin -G grafana -u 472 grafana && \
     \
     package install .grafana-run-deps \
-                chromium \
-                libc6-compat \
-                ttf-opensans \
-                udev \
-                && \
+                    chromium \
+                    libc6-compat \
+                    ttf-opensans \
+                    udev \
+                    && \
     \
     mkdir -p /usr/src/grafana && \
     curl -sSL https://dl.grafana.com/oss/release/grafana-${GRAFANA_VERSION/v/}.linux-amd64.tar.gz | tar xfz - --strip 1 -C /usr/src/grafana && \
     cd /usr/src/grafana && \
-    cp -R /usr/src/grafana/bin/grafana-server /usr/sbin && \
-    cp -R /usr/src/grafana/bin/grafana-cli /usr/sbin && \
-    cp -R /usr/src/grafana/bin/grafana /usr/sbin && \
+    mkdir -p /usr/local/sbin && \
+    cp -R \
+            /usr/src/grafana/bin/grafana \
+            /usr/src/grafana/bin/grafana-cli \
+            /usr/src/grafana/bin/grafana-server \
+                /usr/local/sbin/ \
+            && \
     mkdir -p /usr/share/grafana  && \
-    cp -R /usr/src/grafana/public /usr/share/grafana && \
-    cp -R /usr/src/grafana/conf /usr/share/grafana && \
-    cp -R /usr/src/grafana/plugins-bundled /usr/share/grafana && \
+    cp -R \
+            /usr/src/grafana/conf \
+            /usr/src/grafana/plugins-bundled \
+            /usr/src/grafana/public \
+                /usr/share/grafana && \
     chown -R grafana:grafana /usr/share/grafana && \
     mkdir -p /assets/grafana && \
     \
