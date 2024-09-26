@@ -1,3 +1,10 @@
+## 1.0.15 2024-09-26 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 11.2.1
+      - Pin to tiredofit/nginx:6.5.2
+
+
 ## 1.0.14 2024-08-27 <dave at tiredofit dot ca>
 
    ### Added
