@@ -1,12 +1,12 @@
 ARG DISTRO="alpine"
 ARG DISTRO_VARIANT="3.20"
 
-FROM docker.io/tiredofit/nginx:${DISTRO}-${DISTRO_VARIANT}-6.5.4
+FROM docker.io/tiredofit/nginx:${DISTRO}-${DISTRO_VARIANT}-6.5.5
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ARG GRAFANA_VERSION
 
-ENV GRAFANA_VERSION=${GRAFANA_VERSION:-v11.3.0} \
+ENV GRAFANA_VERSION=${GRAFANA_VERSION:-v11.3.0+security-01} \
     GRAFANA_SOURCE_REPO=https://github.com/grafana/grafana \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE \
