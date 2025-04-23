@@ -1,3 +1,9 @@
+## 1.0.32 2025-04-23 <dave at tiredofit dot ca>
+
+   ### Added
+      - Grafana 11.6.1
+
+
 ## 1.0.31 2025-04-22 <dave at tiredofit dot ca>
 
    ### Added
