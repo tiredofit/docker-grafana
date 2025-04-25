@@ -2,7 +2,7 @@
 
 source /assets/functions/00-container
 prepare_service defaults single
-SERVICE_NAME="grafana"
+PROCESS_NAME="grafana"
 
 check_container_initialized
 check_service_initialized init

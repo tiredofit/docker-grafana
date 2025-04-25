@@ -1,3 +1,9 @@
+## 1.0.34 2025-04-25 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Revert SERVICE_NAME to PROCESS_NAME
+
+
 ## 1.0.33 2025-04-25 <dave at tiredofit dot ca>
 
    ### Added
