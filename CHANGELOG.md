@@ -1,3 +1,9 @@
+## 1.0.33 2025-04-25 <dave at tiredofit dot ca>
+
+   ### Added
+      - Pin to tiredofit/nginx:6.5.17
+
+
 ## 1.0.32 2025-04-23 <dave at tiredofit dot ca>
 
    ### Added
